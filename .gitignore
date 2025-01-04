@@ -1,0 +1,60 @@
+# Ignore hidden folders
+.git/
+.vs/
+
+# Ignore Visual Studio project files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build files and intermediate outputs
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.idb
+*.lib
+*.log
+*.tmp
+*.tlog
+*.lastbuildstate
+
+# Ignore auto-generated files
+*.pch
+*.aps
+*.ncb
+*.opt
+*.plg
+*.pyc
+*.pyo
+*.mdf
+*.ldf
+*.sdf
+*.ipch
+*.iobj
+*.ipdb
+
+# Ignore precompiled headers
+*.gch
+
+# Ignore compiled dynamic libraries
+*.dll
+
+# Ignore build directories
+build/
+x64/
+Debug/
+Release/
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+*.log
+*.class
+*.o
+*.out
