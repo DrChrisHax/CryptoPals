@@ -104,3 +104,15 @@ std::string base64ToText(const std::string& input) {
 	}
 	return output;
 }
+
+std::string fixedXor(const std::string& input1, const std::string& input2) {
+	if (input1.size() != input2.size()) { return ""; }
+
+	std::string output;
+	output.reserve(input1.size());
+
+	for (size_t i = 0; i < input1.size(); i++) {
+		output.push_back((input1[i]) ^ (input2[i]));
+	}
+	return output;
+}

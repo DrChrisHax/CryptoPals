@@ -128,7 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="challenge1.cpp" />
-    <ClCompile Include="encoding_util.cpp" />
+    <ClCompile Include="challenge2.cpp" />
+    <ClCompile Include="encoding_utils.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
