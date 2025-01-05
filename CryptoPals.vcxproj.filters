@@ -26,12 +26,21 @@
     <ClCompile Include="challenge2.cpp">
       <Filter>Set1</Filter>
     </ClCompile>
+    <ClCompile Include="challenge3.cpp">
+      <Filter>Set1</Filter>
+    </ClCompile>
+    <ClCompile Include="heuristic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoding_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="heuristic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

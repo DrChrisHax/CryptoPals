@@ -129,12 +129,15 @@
   <ItemGroup>
     <ClCompile Include="challenge1.cpp" />
     <ClCompile Include="challenge2.cpp" />
+    <ClCompile Include="challenge3.cpp" />
     <ClCompile Include="encoding_utils.cpp" />
+    <ClCompile Include="heuristic.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h" />
     <ClInclude Include="encoding_utils.h" />
+    <ClInclude Include="heuristic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
