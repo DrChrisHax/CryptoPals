@@ -6,9 +6,6 @@ static const std::string base64_chars =
 	"abcdefghijklmnopqrstuvwxyz"
 	"0123456789+/";
 
-static inline bool isBase64(unsigned char c) {
-	return (std::isalnum(c) || c == '+' || c == '/');
-}
 
 std::string textToHex(const std::string& input) {
 	std::string output;
