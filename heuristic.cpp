@@ -1,4 +1,5 @@
 #include "heuristic.h"
+#include <iostream>
 
 static const std::vector<double> freqEnglish = {
         8.167, // A
@@ -48,7 +49,7 @@ double scoreText(const std::string& input) {
     if (input.empty()) { return 0.0; }
 
 
-    //Frequency Scoring
+    //1. Frequency Scoring
     std::vector<int> letterCount(26, 0);
     int totalLetters = 0;
     for (unsigned char c : input) {
@@ -73,5 +74,23 @@ double scoreText(const std::string& input) {
         freqScore = compareLetterFreq(freqText);
     }
 
-    return freqScore;
+    //2. Count Printable Characters
+    double printableChars = 0.0;
+    for (unsigned char c : input) {
+        if (std::isprint(c) || c == '\n' || c == '\t' || c == '\r') {
+            printableChars++;
+        }
+    }
+    double printableRatio = printableChars / input.size();
+
+    //3. Count AlphaNum Characters
+    double alphaNumChars = 0.0;
+    for (unsigned char c : input) {
+        if (std::isalnum(c) || c == ' ') {
+            alphaNumChars++;
+        }
+    }
+    double alphaNumRatio = alphaNumChars / input.size();
+
+    return (freqScore + printableRatio + alphaNumRatio) / 3;
 }
