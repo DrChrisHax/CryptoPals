@@ -10,3 +10,4 @@ std::string textToBase64(const std::string& input);
 std::string base64ToText(const std::string& input);
 
 std::string fixedXor(const std::string& input1, const std::string& input2);
+std::string repeatingXor(const std::string& input, const std::string& key);

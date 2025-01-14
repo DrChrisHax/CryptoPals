@@ -116,3 +116,16 @@ std::string fixedXor(const std::string& input1, const std::string& input2) {
 	}
 	return output;
 }
+
+std::string repeatingXor(const std::string& input, const std::string& key) {
+	size_t inputSize = input.size(), keySize = key.size();
+
+	std::string output;
+	output.reserve(inputSize);
+
+	for (size_t p = 0; p < inputSize; p++) {
+		output.push_back(input[p] ^ key[p % keySize]);
+	}
+
+	return output;
+}
