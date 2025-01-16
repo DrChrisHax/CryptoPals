@@ -19,7 +19,7 @@ std::string textToHex(const std::string& input) {
 }
 
 std::string hexToText(const std::string& input) {
-	if (input.size() % 2 != 0) {
+	if ((input.size() & 1)) {
 		return "";
 	}
 
@@ -128,4 +128,18 @@ std::string repeatingXor(const std::string& input, const std::string& key) {
 	}
 
 	return output;
+}
+
+int hammingDistance(const std::string& input1, const std::string& input2) {
+	if (input1.length() != input2.length()) return -1;
+
+	int totalDist = 0;
+
+	for (size_t i = 0; i < input1.length(); i++) {
+		unsigned char x = static_cast<unsigned char>(input1[i]) ^
+						  static_cast<unsigned char>(input2[i]);
+
+		totalDist += static_cast<int>(std::bitset<8>(x).count());
+	}
+	return totalDist;
 }

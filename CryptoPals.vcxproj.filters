@@ -41,6 +41,9 @@
     <ClCompile Include="challenge5.cpp">
       <Filter>Set1</Filter>
     </ClCompile>
+    <ClCompile Include="challenge6.cpp">
+      <Filter>Set1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">
@@ -55,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="4.txt">
+      <Filter>Challenge Data</Filter>
+    </Text>
+    <Text Include="6.txt">
       <Filter>Challenge Data</Filter>
     </Text>
   </ItemGroup>
