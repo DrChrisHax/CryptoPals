@@ -44,6 +44,12 @@
     <ClCompile Include="challenge6.cpp">
       <Filter>Set1</Filter>
     </ClCompile>
+    <ClCompile Include="challenge7.cpp">
+      <Filter>Set1</Filter>
+    </ClCompile>
+    <ClCompile Include="aes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">
@@ -55,12 +61,18 @@
     <ClInclude Include="heuristic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="aes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="4.txt">
       <Filter>Challenge Data</Filter>
     </Text>
     <Text Include="6.txt">
+      <Filter>Challenge Data</Filter>
+    </Text>
+    <Text Include="7.txt">
       <Filter>Challenge Data</Filter>
     </Text>
   </ItemGroup>

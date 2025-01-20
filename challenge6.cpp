@@ -101,12 +101,11 @@ std::string findKey(int keySize, const std::string& data) {
     return key;
 }
 
-
 std::string challenge6() {
 
     std::ifstream file("6.txt");
     if (!file.is_open()) {
-        return "File 4.txt failed to open";
+        return "File 6.txt failed to open";
     }
 
     std::ostringstream buffer;
