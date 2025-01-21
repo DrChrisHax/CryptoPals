@@ -135,6 +135,7 @@
     <ClCompile Include="challenge5.cpp" />
     <ClCompile Include="challenge6.cpp" />
     <ClCompile Include="challenge7.cpp" />
+    <ClCompile Include="challenge8.cpp" />
     <ClCompile Include="encoding_utils.cpp" />
     <ClCompile Include="heuristic.cpp" />
     <ClCompile Include="main.cpp" />
@@ -149,6 +150,7 @@
     <Text Include="4.txt" />
     <Text Include="6.txt" />
     <Text Include="7.txt" />
+    <Text Include="8.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

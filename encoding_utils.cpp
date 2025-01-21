@@ -143,3 +143,21 @@ int hammingDistance(const std::string& input1, const std::string& input2) {
 	}
 	return totalDist;
 }
+
+bool hasRepeatingBlocks(const std::string& ciphertext, size_t blockSize) {
+	if (ciphertext.length() < blockSize) {
+		return false; //not enough data
+	}
+
+	std::unordered_set<std::string> uniqueBlocks;
+	int numOfBlocks = ciphertext.length() / blockSize;
+
+	for (size_t i = 0; i < numOfBlocks; i++) {
+		std::string block = ciphertext.substr(i * blockSize, blockSize);
+		if (!uniqueBlocks.insert(block).second) {
+			return true;
+		}
+	}
+	return false;
+}
+

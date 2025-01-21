@@ -50,6 +50,9 @@
     <ClCompile Include="aes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="challenge8.cpp">
+      <Filter>Set1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">
@@ -73,6 +76,9 @@
       <Filter>Challenge Data</Filter>
     </Text>
     <Text Include="7.txt">
+      <Filter>Challenge Data</Filter>
+    </Text>
+    <Text Include="8.txt">
       <Filter>Challenge Data</Filter>
     </Text>
   </ItemGroup>
