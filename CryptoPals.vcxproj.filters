@@ -15,6 +15,9 @@
     <Filter Include="Challenge Data">
       <UniqueIdentifier>{064117ee-ab02-42ef-a0d7-57c85cec65b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Set2">
+      <UniqueIdentifier>{39d09b99-1001-40ce-8306-7a419e8a6473}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -52,6 +55,15 @@
     </ClCompile>
     <ClCompile Include="challenge8.cpp">
       <Filter>Set1</Filter>
+    </ClCompile>
+    <ClCompile Include="challenge9.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="print_utils.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="print_utils.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

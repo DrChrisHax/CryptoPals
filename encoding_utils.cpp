@@ -6,7 +6,6 @@ static const std::string base64_chars =
 	"abcdefghijklmnopqrstuvwxyz"
 	"0123456789+/";
 
-
 std::string textToHex(const std::string& input) {
 	std::string output;
 	output.reserve(input.length() * 2);
@@ -161,3 +160,26 @@ bool hasRepeatingBlocks(const std::string& ciphertext, size_t blockSize) {
 	return false;
 }
 
+std::string padPKCS7(const std::string& plaintext, size_t blockSize) {
+	size_t finalBlockLen = plaintext.length() % blockSize;
+	char pad = (finalBlockLen == 0) ? 0 : blockSize - finalBlockLen;
+
+	std::string paddedText = std::string(plaintext.begin(), plaintext.end());
+	paddedText.append(pad, pad);
+	return paddedText;
+}
+
+std::string unpadPKCS7(const std::string& paddedtext) {
+
+	if (paddedtext.empty()) { return paddedtext; }
+
+	char pad = paddedtext.back();
+
+	if (pad <= 0) { return paddedtext; }
+
+	for (size_t i = paddedtext.length() - pad; i < paddedtext.length(); i++) {
+		if (paddedtext[i] != pad) { return paddedtext; }
+	}
+
+	return paddedtext.substr(0, paddedtext.length() - pad);
+}
