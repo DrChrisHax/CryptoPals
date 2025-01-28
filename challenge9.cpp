@@ -10,5 +10,5 @@ std::string challenge9() {
 
 	std::string paddedtext = padPKCS7(plaintext, 20);
 
-	return formatAsPrintable(unpadPKCS7(paddedtext));
+	return formatAsPrintable(paddedtext);
 }
