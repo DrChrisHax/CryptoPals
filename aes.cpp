@@ -1,4 +1,5 @@
 #include "aes.h"
+#include "encoding_utils.h"
 
 std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key) {
 	if (key.size() != 16) {
@@ -14,6 +15,8 @@ std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key)
 		EVP_CIPHER_CTX_free(ctx);
 		throw std::runtime_error("Encryption initialization failed.");
 	}
+
+	EVP_CIPHER_CTX_set_padding(ctx, 0);
 
 	std::string ciphertext;
 	ciphertext.resize(data.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
@@ -56,6 +59,8 @@ std::string aes_128_ecb_decrypt(const std::string& data, const std::string& key)
 		throw std::runtime_error("Decryption initialization failed.");
 	}
 
+	EVP_CIPHER_CTX_set_padding(ctx, 0);
+
 	std::string plaintext;
 	plaintext.resize(data.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
 
@@ -81,3 +86,33 @@ std::string aes_128_ecb_decrypt(const std::string& data, const std::string& key)
 	plaintext.resize(plaintextLen);
 	return plaintext;
 }
+
+std::string aes_128_cbc_encrypt(const std::string& data, const std::string& key, const std::string& iv, size_t blockSize) {
+	std::string paddedData = padPKCS7(data, blockSize);
+	std::vector<std::string> blocks = splitBlocks(paddedData, blockSize);
+	std::string prevBlock = iv;
+	std::string ciphertext;
+	ciphertext.reserve(paddedData.size());
+
+	for (const auto& block : blocks) {
+		std::string xored = fixedXor(block, prevBlock);
+		std::string encrypt = aes_128_ecb_encrypt(xored, key);
+		ciphertext += encrypt;
+		prevBlock = encrypt;
+	}
+	return ciphertext;
+}
+
+std::string aes_128_cbc_decrypt(const std::string& data, const std::string& key, std::string iv, size_t blockSize) {
+	std::vector<std::string> blocks = splitBlocks(data, blockSize);
+	std::string paddedPlaintext;
+
+	for (const auto& block : blocks) {
+		std::string decrypt = aes_128_ecb_decrypt(block, key);
+		decrypt = fixedXor(decrypt, iv);
+		paddedPlaintext += decrypt;
+		iv = block;
+	}
+	return unpadPKCS7(paddedPlaintext);
+}
+

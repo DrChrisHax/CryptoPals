@@ -160,6 +160,15 @@ bool hasRepeatingBlocks(const std::string& ciphertext, size_t blockSize) {
 	return false;
 }
 
+std::vector<std::string> splitBlocks(const std::string& data, size_t blockSize) {
+	std::vector<std::string> blocks;
+	if (blockSize == 0) { return blocks; }
+	for (size_t i = 0; i < data.size(); i += blockSize) {
+		blocks.push_back(data.substr(i, blockSize));
+	}
+	return blocks;
+}
+
 std::string padPKCS7(const std::string& plaintext, size_t blockSize) {
 	size_t finalBlockLen = plaintext.length() % blockSize;
 	char pad = (finalBlockLen == 0) ? 0 : blockSize - finalBlockLen;

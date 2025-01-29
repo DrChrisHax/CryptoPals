@@ -65,6 +65,9 @@
     <ClCompile Include="print_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="challenge10.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">
@@ -91,6 +94,9 @@
       <Filter>Challenge Data</Filter>
     </Text>
     <Text Include="8.txt">
+      <Filter>Challenge Data</Filter>
+    </Text>
+    <Text Include="10.txt">
       <Filter>Challenge Data</Filter>
     </Text>
   </ItemGroup>

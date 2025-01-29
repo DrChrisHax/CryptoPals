@@ -18,6 +18,7 @@ std::string repeatingXor(const std::string& input, const std::string& key);
 int hammingDistance(const std::string& input1, const std::string& input2);
 
 bool hasRepeatingBlocks(const std::string& ciphertext, size_t blockSize);
+std::vector<std::string> splitBlocks(const std::string& data, size_t blockSize);
 
 std::string padPKCS7(const std::string& plaintext, size_t blockSize);
 std::string unpadPKCS7(const std::string& paddedtext);

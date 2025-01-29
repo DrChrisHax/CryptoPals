@@ -14,6 +14,7 @@ Do this with code.
 
 You can obviously decrypt this using the OpenSSL command-line tool, but we're having you get ECB working in code for a reason. You'll need it a lot later on, and not just for attacking ECB.
 */
+
 #include "challenges.h"
 #include "encoding_utils.h"
 #include "aes.h"
