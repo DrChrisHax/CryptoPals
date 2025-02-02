@@ -71,6 +71,9 @@
     <ClCompile Include="random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="challenge12.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">

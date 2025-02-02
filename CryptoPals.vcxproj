@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="aes.cpp" />
     <ClCompile Include="challenge11.cpp" />
+    <ClCompile Include="challenge12.cpp" />
     <ClCompile Include="encoding_utils.cpp" />
     <ClCompile Include="print_utils.cpp" />
     <ClCompile Include="heuristic.cpp" />
