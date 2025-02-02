@@ -6,6 +6,8 @@ std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key)
 		throw std::runtime_error("Key must be 16 bytes for AES-128");
 	}
 
+	std::string paddedData = padPKCS7(data, 16);
+
 	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
 	if (!ctx) {
 		throw std::runtime_error("Failed to create EVP context");
@@ -19,14 +21,14 @@ std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key)
 	EVP_CIPHER_CTX_set_padding(ctx, 0);
 
 	std::string ciphertext;
-	ciphertext.resize(data.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
+	ciphertext.resize(paddedData.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
 
 	int len = 0;
 	int ciphertextLen = 0;
 
 	if (1 != EVP_EncryptUpdate(ctx, reinterpret_cast<unsigned char*>(&ciphertext[0]), &len,
-		reinterpret_cast<const unsigned char*>(data.data()),
-		static_cast<int>(data.size()))) {
+		reinterpret_cast<const unsigned char*>(paddedData.data()),
+		static_cast<int>(paddedData.size()))) {
 		EVP_CIPHER_CTX_free(ctx);
 		throw std::runtime_error("Encryption update failed");
 	}
@@ -83,16 +85,18 @@ std::string aes_128_ecb_decrypt(const std::string& data, const std::string& key)
 
 	EVP_CIPHER_CTX_free(ctx);
 
+	plaintext = unpadPKCS7(plaintext);
+
 	plaintext.resize(plaintextLen);
 	return plaintext;
 }
 
 std::string aes_128_cbc_encrypt(const std::string& data, const std::string& key, const std::string& iv, size_t blockSize) {
 	std::string paddedData = padPKCS7(data, blockSize);
-	std::vector<std::string> blocks = splitBlocks(paddedData, blockSize);
+	std::vector<std::string> blocks = splitBlocks(data, blockSize);
 	std::string prevBlock = iv;
 	std::string ciphertext;
-	ciphertext.reserve(paddedData.size());
+	ciphertext.reserve(data.size());
 
 	for (const auto& block : blocks) {
 		std::string xored = fixedXor(block, prevBlock);

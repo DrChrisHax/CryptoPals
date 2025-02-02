@@ -17,3 +17,4 @@ std::string challenge8();
 //Set 2 - Block crypto
 std::string challenge9();
 std::string challenge10();
+std::string challenge11();

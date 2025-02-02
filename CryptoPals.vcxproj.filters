@@ -59,14 +59,17 @@
     <ClCompile Include="challenge9.cpp">
       <Filter>Set2</Filter>
     </ClCompile>
-    <ClCompile Include="print_utils.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="print_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="challenge10.cpp">
       <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="challenge11.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="random.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +83,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="aes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
