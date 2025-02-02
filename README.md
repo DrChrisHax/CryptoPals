@@ -18,8 +18,7 @@ Subscribe for in-depth walkthroughs: **[DrChrisHax on YouTube](https://www.youtu
 ## 🔗 How to Use
 This repository is optomized for Visual Studio. It is easiest to open visual studio, click clone a repository, then paste the link for this repository 
 
-🚀 Let's Crack Some Codes!
-
-💻 Check out the challenges on CryptoPals
-📺 Watch my walkthroughs on YouTube @DrChrisHax
-⭐ Star this repository if you find it helpful!
+### 🚀 Let's Crack Some Codes!
+### 💻 Check out the challenges on CryptoPals
+### 📺 Watch my walkthroughs on YouTube: DrChrisHax
+### ⭐ Star this repository if you find it helpful!
