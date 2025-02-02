@@ -21,8 +21,5 @@ This repository is optomized for Visual Studio. It is easiest to open visual stu
 🚀 Let's Crack Some Codes!
 
 💻 Check out the challenges on CryptoPals
-📺 Watch my walkthroughs on YouTube
+📺 Watch my walkthroughs on YouTube @DrChrisHax
 ⭐ Star this repository if you find it helpful!
-🏷 Hashtags for Visibility
-
-#Cryptography #CPlusPlus #CryptoPals #Programming #CyberSecurity #LowLevelCoding #CodeWalkthrough #CryptoChallenges #LearnToCode #GitHub #OpenSource #CodingTutorial #SecureCoding #ProgrammingChallenges #TechEducation #CryptoExplained #Troubleshooting #Debugging #AES #C++
