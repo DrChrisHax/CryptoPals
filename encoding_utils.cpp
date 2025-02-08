@@ -192,3 +192,24 @@ std::string unpadPKCS7(const std::string& paddedtext) {
 
 	return paddedtext.substr(0, paddedtext.length() - pad);
 }
+
+std::map<std::string, std::string> parseKV(const std::string& input) {
+	std::map<std::string, std::string> kv;
+
+	size_t p = 0;
+	while (p < input.size()) {
+		size_t amp = input.find('&', p);
+		if (amp == std::string::npos) {
+			amp = input.size();
+		}
+		std::string chunk = input.substr(p, amp - p);
+		size_t eq = chunk.find('=');
+		if (eq != std::string::npos) {
+			std::string key = chunk.substr(0, eq);
+			std::string value = chunk.substr(eq + 1);
+			kv[key] = value;
+		}
+		p = amp + 1;
+	}
+	return kv;
+}
