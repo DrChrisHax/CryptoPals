@@ -120,3 +120,19 @@ std::string aes_128_cbc_decrypt(const std::string& data, const std::string& key,
 	return unpadPKCS7(paddedPlaintext);
 }
 
+int findECBBlockSize(BlackBoxEncryptionFunc blackBoxEncryption) {
+	std::string plaintext = "";
+	int len1 = blackBoxEncryption(plaintext).length();
+	int len2 = len1;
+
+	while (len1 == len2) {
+		plaintext += "A";
+		len2 = blackBoxEncryption(plaintext).length();
+	}
+	return len2 - len1;
+}
+
+bool isECBMode(int blockSize, BlackBoxEncryptionFunc blackBoxEncryption) {
+	std::string plaintext(blockSize * 4, 'A');
+	return hasRepeatingBlocks(blackBoxEncryption(plaintext), blockSize);
+}
