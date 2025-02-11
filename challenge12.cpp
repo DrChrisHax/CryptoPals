@@ -42,29 +42,12 @@ This is the first challenge we've given you whose solution will break real crypt
 #include "random.h"
 #include <unordered_map>
 
-const std::string KEY = GenerateRandomBytes(16);
+const static std::string KEY_C12 = GenerateRandomBytes(16);
 
 std::string blackBoxEncryption(const std::string& input) {
     const std::string flag = "Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK";
     const std::string plaintext = input + base64ToText(flag);
-    return aes_128_ecb_encrypt(plaintext, KEY);
-}
-
-int findBlockSize() {
-    std::string plaintext = "";
-    int len1 = blackBoxEncryption(plaintext).length();
-    int len2 = len1;
-
-    while (len1 == len2) {
-        plaintext += "A";
-        len2 = blackBoxEncryption(plaintext).length();
-    }
-    return len2 - len1;
-}
-
-bool isECB(int blockSize) {
-    std::string plaintext(blockSize * 4, 'A');
-    return hasRepeatingBlocks(blackBoxEncryption(plaintext), blockSize);
+    return aes_128_ecb_encrypt(plaintext, KEY_C12);
 }
 
 std::string discoverTarget(int blockSize) {
@@ -91,10 +74,10 @@ std::string discoverTarget(int blockSize) {
 }
 
 std::string challenge12() {
-    int blockSize = findBlockSize();
+    int blockSize = findECBBlockSize(blackBoxEncryption);
     std::string target = "";
 
-    if (isECB(blockSize)) {
+    if (isECBMode(blockSize, blackBoxEncryption)) {
         target = discoverTarget(blockSize);
     }
     else {
