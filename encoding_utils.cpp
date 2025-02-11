@@ -179,7 +179,6 @@ std::string padPKCS7(const std::string& plaintext, size_t blockSize) {
 }
 
 std::string unpadPKCS7(const std::string& paddedtext) {
-
 	if (paddedtext.empty()) { return paddedtext; }
 
 	char pad = paddedtext.back();
@@ -188,6 +187,20 @@ std::string unpadPKCS7(const std::string& paddedtext) {
 
 	for (size_t i = paddedtext.length() - pad; i < paddedtext.length(); i++) {
 		if (paddedtext[i] != pad) { return paddedtext; }
+	}
+
+	return paddedtext.substr(0, paddedtext.length() - pad);
+}
+
+std::string unpadPKCS7WithErrors(const std::string& paddedtext) {
+	if (paddedtext.empty()) { throw std::runtime_error("Plaintext is blank"); }
+
+	char pad = paddedtext.back();
+
+	if (pad <= 0) { throw std::runtime_error("Padding is invalid - negative characters"); }
+
+	for (size_t i = paddedtext.length() - pad; i < paddedtext.length(); i++) {
+		if (paddedtext[i] != pad) { throw std::runtime_error("Padding is invalid - invalid schema"); }
 	}
 
 	return paddedtext.substr(0, paddedtext.length() - pad);

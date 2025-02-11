@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <map>
+#include <stdexcept>
 
 std::string textToHex(const std::string& input);
 std::string hexToText(const std::string& input);
@@ -23,5 +24,6 @@ std::vector<std::string> splitBlocks(const std::string& data, size_t blockSize);
 
 std::string padPKCS7(const std::string& plaintext, size_t blockSize);
 std::string unpadPKCS7(const std::string& paddedtext);
+std::string unpadPKCS7WithErrors(const std::string& paddedtext);
 
 std::map<std::string, std::string> parseKV(const std::string& input);

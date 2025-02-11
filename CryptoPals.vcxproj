@@ -132,6 +132,7 @@
     <ClCompile Include="challenge12.cpp" />
     <ClCompile Include="challenge13.cpp" />
     <ClCompile Include="Challenge14.cpp" />
+    <ClCompile Include="challenge15.cpp" />
     <ClCompile Include="encoding_utils.cpp" />
     <ClCompile Include="print_utils.cpp" />
     <ClCompile Include="heuristic.cpp" />
