@@ -52,28 +52,34 @@ int detectPrefixLength(int blockSize) {
 std::string discoverTarget(int blockSize, int prefixLength) {
     std::string target;
 
-    int prefixPad = (blockSize - (prefixLength % blockSize)) % blockSize,
-        startBlock = (prefixLength + prefixPad) / blockSize,
-        totalLength = blackBoxEncryptionWithPrefix(std::string(prefixPad, 'A')).length(),
-        targetLength = totalLength - (prefixLength + prefixPad);
+    int prefixPad = (blockSize - (prefixLength % blockSize)) % blockSize;
+    int startBlock = (prefixLength + prefixPad) / blockSize;
+    int totalLength = blackBoxEncryptionWithPrefix(std::string(prefixPad, 'A')).length();
+    int targetLength = totalLength - (prefixLength + prefixPad);
 
     for (int i = 0; i < targetLength; i++) {
         std::string craftedInput(prefixPad, 'A');
         craftedInput += std::string(blockSize - 1 - (i % blockSize), 'A');
 
-        int blockIndex = startBlock + ((i / blockSize) * blockSize);
-        std::string targetBlock = blackBoxEncryptionWithPrefix(craftedInput).substr(blockIndex, blockSize);
+        int blockIndex = startBlock + (i / blockSize);
+        std::string targetBlock = blackBoxEncryptionWithPrefix(craftedInput).substr(blockIndex * blockSize, blockSize);
 
         std::unordered_map<std::string, char> blockDictionary;
         for (int j = 0; j < 256; j++) {
             std::string testInput = craftedInput + target + static_cast<char>(j);
+            std::string testBlock = blackBoxEncryptionWithPrefix(testInput).substr(blockIndex * blockSize, blockSize);
 
-            std::string testBlock = blackBoxEncryptionWithPrefix(testInput).substr(blockIndex, blockSize);
-            blockDictionary[testBlock] = static_cast<char>(j);
+            if (blockDictionary.find(testBlock) == blockDictionary.end()) {
+                blockDictionary[testBlock] = static_cast<char>(j);
+            }
         }
 
         if (blockDictionary.find(targetBlock) != blockDictionary.end()) {
             target += blockDictionary[targetBlock];
+        }
+        else {
+            std::cerr << "Error: Could not find matching block!" << std::endl;
+            return target;  // Partial target in case of failure
         }
     }
 
