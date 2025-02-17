@@ -22,3 +22,4 @@ std::string challenge12();
 std::string challenge13();
 std::string challenge14();
 std::string challenge15();
+std::string challenge16();
