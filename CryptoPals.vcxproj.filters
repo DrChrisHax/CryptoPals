@@ -77,6 +77,18 @@
     <ClCompile Include="challenge13.cpp">
       <Filter>Set2</Filter>
     </ClCompile>
+    <ClCompile Include="challenge14.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="challenge15.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="challenge16.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
+    <ClCompile Include="challenge17.cpp">
+      <Filter>Set2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="challenges.h">

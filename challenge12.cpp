@@ -42,12 +42,12 @@ This is the first challenge we've given you whose solution will break real crypt
 #include "random.h"
 #include <unordered_map>
 
-const static std::string KEY_C12 = GenerateRandomBytes(16);
+const static std::string KEY_C12 = GenerateRandomBytes(AES_BLOCKSIZE);
 
 std::string blackBoxEncryption(const std::string& input) {
     const std::string flag = "Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK";
     const std::string plaintext = input + base64ToText(flag);
-    return aes_128_ecb_encrypt(plaintext, KEY_C12);
+    return aes_128_ecb_encrypt(padPKCS7(plaintext, AES_BLOCKSIZE), KEY_C12);
 }
 
 std::string discoverTarget(int blockSize) {

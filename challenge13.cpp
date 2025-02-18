@@ -46,7 +46,7 @@ Using only the user input to profile_for() (as an oracle to generate "valid" cip
 #include "random.h"
 #include "aes.h"
 
-const std::string key = GenerateRandomBytes(16);
+const std::string key = GenerateRandomBytes(AES_BLOCKSIZE);
 
 std::string profile_for(const std::string& email) {
     std::string cleanEmail;
@@ -54,7 +54,9 @@ std::string profile_for(const std::string& email) {
         if (c == '&' || c == '=') continue;
         cleanEmail.push_back(c);
     }
-    return aes_128_ecb_encrypt("email=" + cleanEmail + "&uid=10&role=user", key);
+
+    std::string paddedText = padPKCS7("email=" + cleanEmail + "&uid=10&role=user", AES_BLOCKSIZE);
+    return aes_128_ecb_encrypt(paddedText, key);
 }
 
 std::map<std::string, std::string> decryptProfile(const std::string& ciphertext) {
@@ -65,14 +67,14 @@ std::map<std::string, std::string> decryptProfile(const std::string& ciphertext)
 std::string challenge13() {
     std::string normalEmail = "AAAA@test.com";
     std::string normalCiphertext = profile_for(normalEmail);
-    std::vector<std::string> normalBlocks = splitBlocks(normalCiphertext, 16);
+    std::vector<std::string> normalBlocks = splitBlocks(normalCiphertext, AES_BLOCKSIZE);
 
     std::string admin = "admin";
-    std::string adminPadded = padPKCS7(admin, 16);
+    std::string adminPadded = padPKCS7(admin, AES_BLOCKSIZE);
 
     std::string attackerEmail = "A@test.com" + adminPadded;
     std::string attackCiphertext = profile_for(attackerEmail);
-    std::vector<std::string> attackerBlocks = splitBlocks(attackCiphertext, 16);
+    std::vector<std::string> attackerBlocks = splitBlocks(attackCiphertext, AES_BLOCKSIZE);
 
     std::string forgedCiphertext = normalBlocks[0] + normalBlocks[1] + attackerBlocks[1];
 

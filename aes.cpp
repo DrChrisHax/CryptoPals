@@ -2,11 +2,10 @@
 #include "encoding_utils.h"
 
 std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key) {
-	if (key.size() != 16) {
+	if (key.size() != AES_BLOCKSIZE) {
 		throw std::runtime_error("Key must be 16 bytes for AES-128");
 	}
 
-	std::string paddedData = padPKCS7(data, 16);
 
 	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
 	if (!ctx) {
@@ -21,14 +20,14 @@ std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key)
 	EVP_CIPHER_CTX_set_padding(ctx, 0);
 
 	std::string ciphertext;
-	ciphertext.resize(paddedData.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
+	ciphertext.resize(data.size() + EVP_CIPHER_block_size(EVP_aes_128_ecb()));
 
 	int len = 0;
 	int ciphertextLen = 0;
 
 	if (1 != EVP_EncryptUpdate(ctx, reinterpret_cast<unsigned char*>(&ciphertext[0]), &len,
-		reinterpret_cast<const unsigned char*>(paddedData.data()),
-		static_cast<int>(paddedData.size()))) {
+		reinterpret_cast<const unsigned char*>(data.data()),
+		static_cast<int>(data.size()))) {
 		EVP_CIPHER_CTX_free(ctx);
 		throw std::runtime_error("Encryption update failed");
 	}
@@ -47,7 +46,7 @@ std::string aes_128_ecb_encrypt(const std::string& data, const std::string& key)
 }
 
 std::string aes_128_ecb_decrypt(const std::string& data, const std::string& key) {
-	if (key.size() != 16) {
+	if (key.size() != AES_BLOCKSIZE) {
 		throw std::runtime_error("Key must be 16 bytes for AES-128");
 	}
 
@@ -85,14 +84,13 @@ std::string aes_128_ecb_decrypt(const std::string& data, const std::string& key)
 
 	EVP_CIPHER_CTX_free(ctx);
 
-	plaintext = unpadPKCS7(plaintext);
+	//plaintext = unpadPKCS7(plaintext);
 
 	plaintext.resize(plaintextLen);
 	return plaintext;
 }
 
 std::string aes_128_cbc_encrypt(const std::string& data, const std::string& key, const std::string& iv, size_t blockSize) {
-	std::string paddedData = padPKCS7(data, blockSize);
 	std::vector<std::string> blocks = splitBlocks(data, blockSize);
 	std::string prevBlock = iv;
 	std::string ciphertext;
@@ -117,7 +115,7 @@ std::string aes_128_cbc_decrypt(const std::string& data, const std::string& key,
 		paddedPlaintext += decrypt;
 		iv = block;
 	}
-	return unpadPKCS7(paddedPlaintext);
+	return paddedPlaintext;
 }
 
 int findECBBlockSize(BlackBoxEncryptionFunc BlackBoxEncryption) {

@@ -23,3 +23,6 @@ std::string challenge13();
 std::string challenge14();
 std::string challenge15();
 std::string challenge16();
+
+//Set 3 - Block & stream crypto
+std::string challenge17();

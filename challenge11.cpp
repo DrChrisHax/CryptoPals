@@ -32,12 +32,12 @@ std::string encryptionOracle(const std::string& input) {
 		plaintext = GenerateRandomBytes(5, 10) + input + GenerateRandomBytes(5, 10);
 
 	if (RandomInt(0, 1) == 0) {
-		ciphertext = aes_128_ecb_encrypt(plaintext, key);
+		ciphertext = aes_128_ecb_encrypt(padPKCS7(plaintext, AES_BLOCKSIZE), key);
 		isCBC = false;
 	}
 	else {
 		std::string iv = GenerateRandomBytes(16);
-		ciphertext = aes_128_cbc_encrypt(plaintext, key, iv, 16);
+		ciphertext = aes_128_cbc_encrypt(padPKCS7(plaintext, AES_BLOCKSIZE), key, iv, 16);
 		isCBC = true;
 	}
 	return ciphertext;

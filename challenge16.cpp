@@ -64,7 +64,7 @@ std::string encrypt(const std::string& plaintext) {
 
     std::string sanitized = sanitize(plaintext);
 
-    return aes_128_cbc_encrypt(prefix + sanitized + suffix, KEY_C16, IV_C16, AES_BLOCKSIZE);
+    return aes_128_cbc_encrypt(padPKCS7(prefix + sanitized + suffix, AES_BLOCKSIZE), KEY_C16, IV_C16, AES_BLOCKSIZE);
 }
 
 bool isAdmin(const std::string& ciphertext) {
