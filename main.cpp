@@ -12,12 +12,12 @@ int main() {
 	//std::cout << "Challenge 8: " << challenge8() << std::endl;
 	//std::cout << "Challenge 9: " << challenge9() << std::endl;
 	//std::cout << "Challenge 10: " << challenge10() << std::endl;
-	std::cout << "Challenge 11: " << challenge11() << std::endl;
-	std::cout << "Challenge 12: " << challenge12() << std::endl;
-	std::cout << "Challenge 13: " << challenge13() << std::endl;
-	std::cout << "Challenge 14: " << challenge14() << std::endl;
-	std::cout << "Challenge 15: " << challenge15() << std::endl;
-	std::cout << "Challenge 16: " << challenge16() << std::endl;
+	//std::cout << "Challenge 11: " << challenge11() << std::endl;
+	//std::cout << "Challenge 12: " << challenge12() << std::endl;
+	//std::cout << "Challenge 13: " << challenge13() << std::endl;
+	//std::cout << "Challenge 14: " << challenge14() << std::endl;
+	//std::cout << "Challenge 15: " << challenge15() << std::endl;
+	//std::cout << "Challenge 16: " << challenge16() << std::endl;
 	std::cout << "Challenge 17: " << challenge17() << std::endl;
 
 	return 0;

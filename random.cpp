@@ -1,6 +1,7 @@
 #include "random.h"
 
 int RandomInt(int lowerBound, int upperBound) {
+	//The bounds are inclusive
 	if (!seeded) {
 		std::srand(static_cast<unsigned int>(std::time(nullptr)));
 		seeded = true;

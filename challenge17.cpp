@@ -48,7 +48,7 @@ It is easy to get tripped up on the fact that CBC plaintexts are "padded". Paddi
 #include "encoding_utils.h"
 #include "random.h"
 
-std::string KEY_C17 = GenerateRandomBytes(16);
+std::string KEY_C17 = GenerateRandomBytes(AES_BLOCKSIZE);
 
 std::vector<std::string> messages = {
     "MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=",
@@ -63,66 +63,95 @@ std::vector<std::string> messages = {
     "MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"
 };
 
-std::string encrypt() {
-    // Choose one message at random.
-    size_t idx = static_cast<size_t>(rand() % messages.size());
-    std::string b64message = messages[idx];
+std::pair<std::string, std::string> encrypt() {
+    int index = RandomInt(0, 9);
 
-    // Decode from base64.
-    std::string plaintext = base64ToText(b64message);
+    std::string paddedData = padPKCS7(base64ToText(messages[index]), AES_BLOCKSIZE);
+  
+    std::string iv = GenerateRandomBytes(AES_BLOCKSIZE);
+    std::string ciphertext = aes_128_cbc_encrypt(paddedData, KEY_C17, iv, AES_BLOCKSIZE);
 
-    // Generate a random IV.
-    std::string iv = GenerateRandomBytes(16);
-
-    // Encrypt in CBC mode. (aes_128_cbc_encrypt() calls padPKCS7 internally.)
-    std::string ciphertext = aes_128_cbc_encrypt(plaintext, KEY_C17, iv, 16);
-
-    // Return the IV concatenated with the ciphertext.
-    return iv + ciphertext;
+    return std::make_pair(ciphertext, iv);
 }
 
-bool challenge17_padding_oracle(const std::string& data) {
-    if (data.size() < 16) {
-        return false; // Not enough data for an IV.
+bool paddingOracle(const std::string& ciphertext) {
+    try {
+        // We do not care about the first block’s plaintext so we can pass a dummy IV.
+        std::string dummyIV(AES_BLOCKSIZE, '\0');
+        std::string decrypted = aes_128_cbc_decrypt(ciphertext, KEY_C17, dummyIV, AES_BLOCKSIZE);
+        // unpadPKCS7 will throw if padding is invalid.
+        std::string unpadded = unpadPKCS7WithErrors(decrypted);
+        return true;
     }
-    // Extract IV and ciphertext.
-    std::string iv = data.substr(0, 16);
-    std::string ciphertext = data.substr(16);
-
-    // Split ciphertext into 16-byte blocks.
-    std::vector<std::string> blocks = splitBlocks(ciphertext, 16);
-    if (blocks.empty()) {
+    catch (const std::exception&) {
         return false;
     }
+}
 
-    std::string paddedPlaintext;
-    std::string prevBlock = iv;
-    // Decrypt each block using ECB and XOR with the previous block.
-    for (const auto& block : blocks) {
-        std::string decryptedBlock = aes_128_ecb_decrypt(block, KEY_C17);
-        std::string plainBlock = fixedXor(decryptedBlock, prevBlock);
-        paddedPlaintext += plainBlock;
-        prevBlock = block;
-    }
+// ----------------------------------------------------------------
+// Decrypt a single block using the padding oracle attack.
+// prevBlock is the block that comes immediately before the target ciphertext block.
+std::string decryptBlock(const std::string& prevBlock, const std::string& currBlock) {
+    if (prevBlock.size() != AES_BLOCKSIZE || currBlock.size() != AES_BLOCKSIZE)
+        throw std::runtime_error("Block sizes not equal to AES block size.");
 
-    // Check padding using unpadPKCS7WithErrors.
-    try {
-        std::string dummy = unpadPKCS7WithErrors(paddedPlaintext);
-        return true;  // Padding was valid.
+    std::vector<unsigned char> intermediate(AES_BLOCKSIZE, 0); // holds I = D(currBlock)
+    std::string decryptedBlock(AES_BLOCKSIZE, '\0');           // will hold the recovered plaintext block
+
+    // Work from rightmost byte (index 15) to left (index 0)
+    for (int pos = AES_BLOCKSIZE - 1; pos >= 0; pos--) {
+        // padVal is the value we want to see (1 for last byte, 2 for second-last, etc.)
+        unsigned char padVal = static_cast<unsigned char>(AES_BLOCKSIZE - pos);
+
+        // For each guess 0..255:
+        for (int guess = 0; guess < 256; guess++) {
+            // Create a modified copy of prevBlock which we will alter.
+            std::string modifiedBlock = prevBlock;  // note: each char is one byte
+
+            // For positions after 'pos', set them so that when decrypted they yield padVal.
+            for (int j = pos + 1; j < AES_BLOCKSIZE; j++) {
+                // modifiedBlock[j] = originalByte XOR intermediate[j] XOR padVal
+                modifiedBlock[j] = prevBlock[j] ^ intermediate[j] ^ padVal;
+            }
+            // Now modify the current position using our guess.
+            modifiedBlock[pos] = prevBlock[pos] ^ static_cast<unsigned char>(guess) ^ padVal;
+
+            // Construct the two-block ciphertext: modifiedBlock || currBlock.
+            std::string attackCipher = modifiedBlock + currBlock;
+
+            // Query the padding oracle.
+            if (paddingOracle(attackCipher)) {
+                // We have a candidate.
+                // (Note: There is a rare possibility of a false positive when the real padding byte equals padVal;
+                // you can add an extra check if desired.)
+                intermediate[pos] = static_cast<unsigned char>(guess) ^ padVal;
+                // Recover plaintext: P = I XOR original prevBlock byte.
+                decryptedBlock[pos] = intermediate[pos] ^ prevBlock[pos];
+                break;
+            }
+        }
     }
-    catch (std::runtime_error&) {
-        return false; // Padding was invalid.
-    }
+    return decryptedBlock;
 }
 
 
 std::string challenge17() {
-    std::string result = "";
-    for (auto& m : messages) {
-        result += base64ToText(m) + "\n";
+    std::pair<std::string, std::string> result = encrypt();
+    std::string ciphertext = result.first;
+    std::string iv = result.second;
+
+    // Prepend the IV to the ciphertext so that block[0] = IV, block[1] = first ciphertext block, etc.
+    std::string fullCipher = iv + ciphertext;
+    std::vector<std::string> blocks = splitBlocks(fullCipher, AES_BLOCKSIZE);
+    if (blocks.size() < 2)
+        throw std::runtime_error("Not enough blocks.");
+
+    std::string recoveredPlaintext;
+    // For each block pair (prev, current), starting with (IV, C1), (C1, C2), etc.
+    for (size_t i = 1; i < blocks.size(); i++) {
+        std::string plainBlock = decryptBlock(blocks[i - 1], blocks[i]);
+        recoveredPlaintext += plainBlock;
     }
-
-
-	return result + "\n" + encrypt();
+    // Remove the PKCS#7 padding from the recovered plaintext.
+    return unpadPKCS7(recoveredPlaintext);
 }
-
