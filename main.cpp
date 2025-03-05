@@ -17,7 +17,9 @@ int main() {
 	//std::cout << "Challenge 13: " << challenge13() << std::endl;
 	//std::cout << "Challenge 14: " << challenge14() << std::endl;
 	//std::cout << "Challenge 15: " << challenge15() << std::endl;
-	std::cout << "Challenge 16: " << challenge16() << std::endl;
+	//std::cout << "Challenge 16: " << challenge16() << std::endl;
+	//std::cout << "Challenge 17: " << challenge17() << std::endl;
+	std::cout << "Challenge 18: " << challenge18() << std::endl;
 
 	return 0;
 }
